@@ -1,0 +1,12 @@
+/home/luis/Projects/Rust/tas-gui-v1-1-0/tauri-plugin-serialport/target/debug/deps/libignore-d1ed1ea38fbdd7e5.rmeta: /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/lib.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/default_types.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/dir.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/gitignore.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/overrides.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/pathutil.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/types.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/walk.rs
+
+/home/luis/Projects/Rust/tas-gui-v1-1-0/tauri-plugin-serialport/target/debug/deps/ignore-d1ed1ea38fbdd7e5.d: /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/lib.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/default_types.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/dir.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/gitignore.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/overrides.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/pathutil.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/types.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/walk.rs
+
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/lib.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/default_types.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/dir.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/gitignore.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/overrides.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/pathutil.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/types.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ignore-0.4.18/src/walk.rs:
