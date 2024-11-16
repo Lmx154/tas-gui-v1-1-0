@@ -1,4 +1,9 @@
 // src/services/database_services.jsx
+// This file contains the functions that are used to read data from the database.
+// In the future, these functions should be moved to the backend.
+// The functions are used in the database.jsx file.
+// The functions are readDataInteger, readDataString, readDataFloat, and readAllData.
+// Do NOT add any view logic in this file. The view logic should be in the database.jsx file.
 import { invoke } from "@tauri-apps/api/tauri";
 
 export const readDataInteger = async (
