@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/luis/Projects/Rust/tas-gui-v1-1-0/tauri-plugin-serialport/target/debug/build/typenum-c358fc7f1d65238d/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/luis/Projects/Rust/tas-gui-v1-1-0/tauri-plugin-serialport/target/debug/build/typenum-c358fc7f1d65238d/out/op.rs

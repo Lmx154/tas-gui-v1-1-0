@@ -1,0 +1,12 @@
+/home/luis/Projects/Rust/tas-gui-v1-1-0/tauri-plugin-serialport/target/debug/deps/liblibudev-66942031130c4982.rmeta: /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/lib.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/context.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/device.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/enumerator.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/error.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/monitor.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/handle.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/util.rs
+
+/home/luis/Projects/Rust/tas-gui-v1-1-0/tauri-plugin-serialport/target/debug/deps/libudev-66942031130c4982.d: /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/lib.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/context.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/device.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/enumerator.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/error.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/monitor.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/handle.rs /home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/util.rs
+
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/lib.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/context.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/device.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/enumerator.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/error.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/monitor.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/handle.rs:
+/home/luis/.cargo/registry/src/index.crates.io-6f17d22bba15001f/libudev-0.3.0/src/util.rs:
