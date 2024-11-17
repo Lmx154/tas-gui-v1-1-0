@@ -5,10 +5,12 @@
 import { Serialport } from "tauri-plugin-serialport-api";
 import { toast } from "react-toastify";
 
+// Function to create a serial port instance
 export const createSerialPort = (COMPort) => {
   return new Serialport({ path: COMPort, baudRate: 115200 });
 };
 
+// Function to open the serial port and start reading
 export const openSerialport = async (serialport, setConnectionState, read) => {
   try {
     await serialport.open();
@@ -29,6 +31,7 @@ export const openSerialport = async (serialport, setConnectionState, read) => {
   }
 };
 
+// Function to write data to the serial port
 export const writeSerialport = async (serialport, setConnectionState) => {
   try {
     const res = await serialport.write("t");
@@ -39,6 +42,7 @@ export const writeSerialport = async (serialport, setConnectionState) => {
   }
 };
 
+// Function to read data from the serial port
 export const readSerialport = async (
   serialport,
   setConnectionState,
@@ -53,6 +57,7 @@ export const readSerialport = async (
   }
 };
 
+// Function to listen for data on the serial port
 export const listenSerialport = async (
   serialport,
   setConnectionState,
@@ -115,6 +120,7 @@ export const listenSerialport = async (
   }
 };
 
+// Function to cancel reading from the serial port
 export const cancelReadSerialport = async (serialport) => {
   try {
     const res = await serialport.cancelRead();

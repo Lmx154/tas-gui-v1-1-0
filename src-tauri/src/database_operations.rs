@@ -4,6 +4,7 @@ use rusqlite::{Connection, Result};
 
 #[tauri::command]
 pub fn load_data(database_name: String) -> Result<Vec<(String, Vec<String>)>, String> {
+    // Load data from the specified database and return it as a vector of column names and their values.
     let column_types = get_column_types(database_name.clone())?;
     let conn = match Connection::open(format!("{}.db", database_name)) {
         Ok(conn) => conn,
@@ -21,7 +22,7 @@ pub fn load_data(database_name: String) -> Result<Vec<(String, Vec<String>)>, St
 
         let mut column_data = Vec::new();
 
-        let rows = match stmt.query_map([], |row| {
+        let rows = stmt.query_map([], |row| {
             let value: String = match data_type.as_str() {
                 "INTEGER" => row.get::<_, i32>(0).map(|v| v.to_string()),
                 "REAL" => row.get::<_, f32>(0).map(|v| v.to_string()),
@@ -38,20 +39,26 @@ pub fn load_data(database_name: String) -> Result<Vec<(String, Vec<String>)>, St
             }?;
             column_data.push(value);
             Ok(())
-        }) {
-            Ok(rows) => rows.collect::<Result<Vec<_>, _>>().map_err(|err| {
-                let error_message =
-                    format!("Error collecting rows for column {}: {}", column_name, err);
-                println!("{}", error_message);
-                error_message
-            })?,
+        });
+
+        match rows {
+            Ok(rows) => {
+                for row in rows {
+                    if let Err(err) = row {
+                        let error_message =
+                            format!("Error collecting rows for column {}: {}", column_name, err);
+                        println!("{}", error_message);
+                        return Err(error_message);
+                    }
+                }
+            }
             Err(err) => {
                 let error_message =
                     format!("Error querying rows for column {}: {}", column_name, err);
                 println!("{}", error_message);
                 return Err(error_message);
             }
-        };
+        }
 
         data.push((column_name, column_data));
     }
@@ -59,9 +66,9 @@ pub fn load_data(database_name: String) -> Result<Vec<(String, Vec<String>)>, St
     Ok(data)
 }
 
-// Column selector for use with unified data loading function
 #[tauri::command]
 pub fn get_column_types(database_name: String) -> Result<Vec<(String, String)>, String> {
+    // Get the column names and types from the specified database.
     let conn = match Connection::open(format!("{}.db", database_name)) {
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
@@ -99,6 +106,7 @@ pub fn create_database(
     day: u32,
     year: u32,
 ) -> Result<(), String> {
+    // Create a new database with the specified name and date, and set up the flightData table schema.
     let db_name = format!("{}_{}_{}_{}.db", user_specified_name, month, day, year);
     let conn = match Connection::open(&db_name) {
         Ok(conn) => conn,

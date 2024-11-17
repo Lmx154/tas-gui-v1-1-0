@@ -1,5 +1,9 @@
+// src/services/database_services.jsx
+// This file contains contains the functions that are used to load data from the database and create a new database.
+// Do NOT place any view logic in this file.
 import { invoke } from "@tauri-apps/api/tauri";
 
+// Function to load data from the database
 export const loadData = async (
   databaseSelected,
   setInformation,
@@ -21,6 +25,7 @@ export const loadData = async (
   }
 };
 
+// Function to create a new database
 export const createDatabase = async (
   userSpecifiedName,
   month,

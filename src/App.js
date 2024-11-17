@@ -20,6 +20,7 @@ import {
 } from "./services/serialport_services";
 
 function App() {
+  // State variables
   const [COMPort, setCOMPort] = useState("COM3");
   const [connectionState, setConnectionState] = useState("btn-warning");
   const [packets, setPackets] = useState([]);
@@ -54,13 +55,16 @@ function App() {
   const [filepath, setfilepath] = useState();
   const [live, setliveData] = useState(true);
 
+  // Effect to update packets
   useEffect(() => {}, [packets]);
 
+  // Effect to update serial port when COMPort changes
   useEffect(() => {
     const newSerialPort = createSerialPort(COMPort);
     setSerialport(newSerialPort);
   }, [COMPort]);
 
+  // Function to parse packet data
   function parsePack(
     pack1,
     pack2,
@@ -101,6 +105,7 @@ function App() {
     setsatellitesArray((prevsat) => [...prevsat, pack18]);
   }
 
+  // Function to parse message string
   function parseMessage(inputString) {
     const pattern =
       /Message: \[(\d{4})\/(\d{1,2})\/(\d{1,2}) \((\w+)\) (\d{2}:\d{2}:\d{2})\] (-?\d+\.\d+)/;
@@ -122,6 +127,7 @@ function App() {
     }
   }
 
+  // Handlers for serial port operations
   function openSerialportHandler() {
     openSerialport(serialport, setConnectionState, readSerialportHandler);
   }
@@ -148,6 +154,7 @@ function App() {
     cancelReadSerialport(serialport);
   }
 
+  // Conditional rendering based on live state
   if (live) {
     return (
       <div className="h-screen w-screen flex flex-col">

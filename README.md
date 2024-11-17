@@ -32,6 +32,12 @@ git clone https://github.com/LoneCuriosity/tas-gui-v1.1.0
 Open terminal in project root directory and run
 
 ```bash
+npm install
+```
+
+Then run
+
+```bash
 npm run tauri dev
 ```
 
