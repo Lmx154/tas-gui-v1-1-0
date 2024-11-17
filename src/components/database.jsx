@@ -16,6 +16,7 @@ import {
   readDataString,
   readDataFloat,
   readAllData,
+  createDatabase,
 } from "../services/database_services";
 
 ChartJS.register(
@@ -126,6 +127,16 @@ const Databases = ({ setInformation, setliveData }) => {
     console.log(`the current load year is ->  ${loadYear}`);
   };
 
+  const [dbName, setDbName] = useState("");
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
+  const [year, setYear] = useState("");
+
+  const handleCreateDatabase = async () => {
+    await createDatabase(dbName, month, day, year, setInformation);
+    setmakedbScreen(false);
+  };
+
   if (makedbScreen === false) {
     return (
       <div className="flex flex-col flex-1">
@@ -196,7 +207,57 @@ const Databases = ({ setInformation, setliveData }) => {
       </div>
     );
   } else {
-    return <></>;
+    return (
+      <div className="flex flex-col flex-1">
+        <div className="divider uppercase">Create New Database</div>
+        <div className="flex flex-col">
+          <label>
+            Database Name:
+            <input
+              type="text"
+              value={dbName}
+              onChange={(e) => setDbName(e.target.value)}
+            />
+          </label>
+          <label>
+            Month:
+            <input
+              type="number"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+          </label>
+          <label>
+            Day:
+            <input
+              type="number"
+              value={day}
+              onChange={(e) => setDay(e.target.value)}
+            />
+          </label>
+          <label>
+            Year:
+            <input
+              type="number"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+            />
+          </label>
+          <button
+            className={"btn btn-outline btn-success uppercase"}
+            onClick={handleCreateDatabase}
+          >
+            Create Database
+          </button>
+          <button
+            className={"btn btn-outline btn-error uppercase"}
+            onClick={() => setmakedbScreen(false)}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
   }
 };
 

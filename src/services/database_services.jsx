@@ -134,3 +134,25 @@ export const readAllData = async (
     setInformation(error);
   }
 };
+
+export const createDatabase = async (
+  userSpecifiedName,
+  month,
+  day,
+  year,
+  setInformation,
+) => {
+  try {
+    await invoke("create_database", {
+      userSpecifiedName,
+      month,
+      day,
+      year,
+    });
+    setInformation(
+      `Database ${userSpecifiedName}_${month}_${day}_${year}.db created successfully.`,
+    );
+  } catch (error) {
+    setInformation(`Error creating database: ${error}`);
+  }
+};

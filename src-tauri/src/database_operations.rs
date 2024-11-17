@@ -39,6 +39,53 @@ pub fn load_database_integer_database(
 }
 
 #[tauri::command]
+pub fn create_database(
+    user_specified_name: String,
+    month: u32,
+    day: u32,
+    year: u32,
+) -> Result<(), String> {
+    let db_name = format!("{}_{}_{}_{}.db", user_specified_name, month, day, year);
+    let conn = match Connection::open(&db_name) {
+        Ok(conn) => conn,
+        Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
+    };
+
+    let create_table_query = r#"
+        CREATE TABLE IF NOT EXISTS "flightData" (
+            "years" INTEGER,
+            "months" INTEGER,
+            "days" INTEGER,
+            "weekdays" TEXT,
+            "times" TEXT,
+            "Accel_x" REAL,
+            "Accel_y" REAL,
+            "Accel_Z" REAL,
+            "gx" REAL,
+            "gy" REAL,
+            "gz" REAL,
+            "Temperature_C" REAL,
+            "Temperature" REAL,
+            "Pressures" REAL,
+            "Altitudes" REAL,
+            "Humidity" REAL,
+            "fixs" REAL,
+            "fixquality" INTEGER,
+            "latitudes" REAL,
+            "longitudes" REAL,
+            "speed" REAL,
+            "altitude_gps" REAL,
+            "satellities" INTEGER
+        );
+    "#;
+
+    match conn.execute(create_table_query, []) {
+        Ok(_) => Ok(()),
+        Err(err) => Err(format!("Error creating table: {}", err.to_string())),
+    }
+}
+
+#[tauri::command]
 pub fn load_database_string_database(
     column: String,
     database_name: String,
