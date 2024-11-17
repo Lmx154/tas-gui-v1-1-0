@@ -1,4 +1,3 @@
-// src/components/database.jsx
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,13 +10,7 @@ import {
 } from "chart.js";
 import { Line, getElementAtEvent } from "react-chartjs-2";
 import { useEffect, useRef, useState } from "react";
-import {
-  readDataInteger,
-  readDataString,
-  readDataFloat,
-  readAllData,
-  createDatabase,
-} from "../services/database_services";
+import { loadData, createDatabase } from "../services/database_services";
 
 ChartJS.register(
   CategoryScale,
@@ -158,7 +151,7 @@ const Databases = ({ setInformation, setliveData }) => {
             <button
               className={"btn btn-outline btn-error uppercase"}
               onClick={() => {
-                readAllData(loadYear, setInformation, setStateFunctions);
+                loadData(loadYear, setInformation, setStateFunctions);
               }}
             >
               Load:{`${yearSelect}`}

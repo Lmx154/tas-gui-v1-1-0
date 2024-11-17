@@ -6,10 +6,7 @@
 mod database_operations;
 mod file_operations;
 
-use database_operations::{
-    create_database, load_database_float_database, load_database_integer_database,
-    load_database_string_database,
-};
+use database_operations::{create_database, load_data};
 use file_operations::create_file;
 
 fn main() {
@@ -23,9 +20,7 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             create_file,
-            load_database_integer_database,
-            load_database_string_database,
-            load_database_float_database,
+            load_data, //unified function to load data from database
             create_database,
         ])
         .plugin(tauri_plugin_serialport::init())

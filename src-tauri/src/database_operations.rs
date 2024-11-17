@@ -1,41 +1,95 @@
 extern crate rusqlite;
+use rusqlite::types::Type;
 use rusqlite::{Connection, Result};
 
 #[tauri::command]
-pub fn load_database_integer_database(
-    column: String,
-    database_name: String,
-) -> Result<Vec<i32>, String> {
-    let mut integer_vector = Vec::new();
-    let column_name: &str = &column;
+pub fn load_data(database_name: String) -> Result<Vec<(String, Vec<String>)>, String> {
+    let column_types = get_column_types(database_name.clone())?;
     let conn = match Connection::open(format!("{}.db", database_name)) {
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
 
-    let mut stmt = match conn.prepare("SELECT * FROM flightData") {
+    let mut data = Vec::new();
+
+    for (column_name, data_type) in column_types {
+        println!("Loading column: {} with type: {}", column_name, data_type);
+        let mut stmt = match conn.prepare(&format!("SELECT {} FROM flightData", column_name)) {
+            Ok(stmt) => stmt,
+            Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
+        };
+
+        let mut column_data = Vec::new();
+
+        let rows = match stmt.query_map([], |row| {
+            let value: String = match data_type.as_str() {
+                "INTEGER" => row.get::<_, i32>(0).map(|v| v.to_string()),
+                "REAL" => row.get::<_, f32>(0).map(|v| v.to_string()),
+                "TEXT" => row.get::<_, String>(0),
+                _ => {
+                    let error_message = format!("Invalid column type: {}", data_type);
+                    println!("{}", error_message);
+                    return Err(rusqlite::Error::InvalidColumnType(
+                        0,
+                        data_type.clone(),
+                        Type::Text,
+                    ));
+                }
+            }?;
+            column_data.push(value);
+            Ok(())
+        }) {
+            Ok(rows) => rows.collect::<Result<Vec<_>, _>>().map_err(|err| {
+                let error_message =
+                    format!("Error collecting rows for column {}: {}", column_name, err);
+                println!("{}", error_message);
+                error_message
+            })?,
+            Err(err) => {
+                let error_message =
+                    format!("Error querying rows for column {}: {}", column_name, err);
+                println!("{}", error_message);
+                return Err(error_message);
+            }
+        };
+
+        data.push((column_name, column_data));
+    }
+
+    Ok(data)
+}
+
+// Column selector for use with unified data loading function
+#[tauri::command]
+pub fn get_column_types(database_name: String) -> Result<Vec<(String, String)>, String> {
+    let conn = match Connection::open(format!("{}.db", database_name)) {
+        Ok(conn) => conn,
+        Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
+    };
+
+    let mut stmt = match conn.prepare("PRAGMA table_info(flightData)") {
         Ok(stmt) => stmt,
         Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
     };
 
-    let rows = match stmt.query_map([], |row| {
-        let value: i32 = match row.get(column_name) {
-            Ok(value) => value,
-            Err(err) => return Err(err),
-        };
-        integer_vector.push(value);
-        println!("This is the current year -> {:?}", value);
-        Ok(value)
+    let column_info = match stmt.query_map([], |row| {
+        let name: String = row.get(1)?;
+        let data_type: String = row.get(2)?;
+        Ok((name, data_type))
     }) {
-        Ok(rows) => rows,
-        Err(err) => return Err(format!("Error querying rows: {}", err.to_string())),
+        Ok(rows) => rows.collect::<Result<Vec<_>, _>>().map_err(|err| {
+            let error_message = format!("Error collecting column info: {}", err);
+            println!("{}", error_message);
+            error_message
+        })?,
+        Err(err) => {
+            let error_message = format!("Error querying column info: {}", err);
+            println!("{}", error_message);
+            return Err(error_message);
+        }
     };
 
-    for _ in rows {
-        println!("-");
-    }
-
-    Ok(integer_vector)
+    Ok(column_info)
 }
 
 #[tauri::command]
@@ -50,7 +104,7 @@ pub fn create_database(
         Ok(conn) => conn,
         Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
     };
-
+    //DATABASE SCHEMA SPECIFIED HERE
     let create_table_query = r#"
         CREATE TABLE IF NOT EXISTS "flightData" (
             "years" INTEGER,
@@ -83,78 +137,4 @@ pub fn create_database(
         Ok(_) => Ok(()),
         Err(err) => Err(format!("Error creating table: {}", err.to_string())),
     }
-}
-
-#[tauri::command]
-pub fn load_database_string_database(
-    column: String,
-    database_name: String,
-) -> Result<Vec<String>, String> {
-    let mut string_vector = Vec::new();
-    let column_name: &str = &column;
-    let conn = match Connection::open(format!("{}.db", database_name)) {
-        Ok(conn) => conn,
-        Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
-    };
-
-    let mut stmt = match conn.prepare("SELECT * FROM flightData") {
-        Ok(stmt) => stmt,
-        Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
-    };
-
-    let rows = match stmt.query_map([], |row| {
-        let value: String = match row.get(column_name) {
-            Ok(value) => value,
-            Err(err) => return Err(err),
-        };
-        string_vector.push(value.clone());
-        println!("This is the current year -> {:?}", value);
-        Ok(value)
-    }) {
-        Ok(rows) => rows,
-        Err(err) => return Err(format!("Error querying rows: {}", err.to_string())),
-    };
-
-    for _ in rows {
-        println!("-");
-    }
-
-    Ok(string_vector)
-}
-
-#[tauri::command]
-pub fn load_database_float_database(
-    column: String,
-    database_name: String,
-) -> Result<Vec<f32>, String> {
-    let mut float_vector = Vec::new();
-    let column_name: &str = &column;
-    let conn = match Connection::open(format!("{}.db", database_name)) {
-        Ok(conn) => conn,
-        Err(err) => return Err(format!("Error opening connection: {}", err.to_string())),
-    };
-
-    let mut stmt = match conn.prepare("SELECT * FROM flightData") {
-        Ok(stmt) => stmt,
-        Err(err) => return Err(format!("Error preparing statement: {}", err.to_string())),
-    };
-
-    let rows = match stmt.query_map([], |row| {
-        let value: f32 = match row.get(column_name) {
-            Ok(value) => value,
-            Err(err) => return Err(err),
-        };
-        float_vector.push(value);
-        println!("This is the current value -> {:?}", value);
-        Ok(value)
-    }) {
-        Ok(rows) => rows,
-        Err(err) => return Err(format!("Error querying rows: {}", err.to_string())),
-    };
-
-    for _ in rows {
-        println!("-");
-    }
-
-    Ok(float_vector)
 }
