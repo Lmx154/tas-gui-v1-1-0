@@ -1,2 +1,5 @@
 node_modules
 public
+
+# Ignore the debug folder
+debug/
