@@ -35,6 +35,8 @@ Open terminal in project root directory and run
 npm install
 ```
 
+
+Be sure to install rust and tauri-cli
 Then run
 
 ```bash
