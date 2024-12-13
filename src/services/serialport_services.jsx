@@ -10,8 +10,13 @@ export const createSerialPort = (COMPort) => {
   return new Serialport({ path: COMPort, baudRate: 115200 });
 };
 
+// Function to capture console logs
+export const captureConsoleLogs = (setInformation, message) => {
+  setInformation((prevInfo) => prevInfo + "\n" + message);
+};
+
 // Function to open the serial port and start reading
-export const openSerialport = async (serialport, setConnectionState, read) => {
+export const openSerialport = async (serialport, setConnectionState, read, setInformation) => {
   try {
     await serialport.open();
     read();
@@ -27,17 +32,20 @@ export const openSerialport = async (serialport, setConnectionState, read) => {
       progress: undefined,
       theme: "dark",
     });
+    captureConsoleLogs(setInformation, `Error: ${err.message}`);
     console.error(err);
   }
 };
 
 // Function to write data to the serial port
-export const writeSerialport = async (serialport, setConnectionState) => {
+export const writeSerialport = async (serialport, setConnectionState, setInformation) => {
   try {
     const res = await serialport.write("t");
+    captureConsoleLogs(setInformation, `write serialport: ${res}`);
     console.log("write serialport: ", res);
   } catch (err) {
     setConnectionState("btn-error");
+    captureConsoleLogs(setInformation, `Error: ${err.message}`);
     console.error(err);
   }
 };
@@ -47,12 +55,14 @@ export const readSerialport = async (
   serialport,
   setConnectionState,
   listen,
+  setInformation,
 ) => {
   try {
     const res = await serialport.read({ timeout: 1 });
     listen();
   } catch (err) {
     setConnectionState("btn-error");
+    captureConsoleLogs(setInformation, `Error: ${err.message}`);
     console.error(err);
   }
 };
@@ -64,6 +74,7 @@ export const listenSerialport = async (
   parsePack,
   setsnrArray,
   setrssiArray,
+  setInformation,
 ) => {
   try {
     const res = await serialport.listen((data) => {
@@ -113,19 +124,23 @@ export const listenSerialport = async (
       }
     }, false);
     setConnectionState("btn-success btn-disabled");
+    captureConsoleLogs(setInformation, `listen serialport: ${res}`);
     console.log("listen serialport: ", res);
   } catch (err) {
     setConnectionState("btn-error");
+    captureConsoleLogs(setInformation, `Error: ${err.message}`);
     console.error(err);
   }
 };
 
 // Function to cancel reading from the serial port
-export const cancelReadSerialport = async (serialport) => {
+export const cancelReadSerialport = async (serialport, setInformation) => {
   try {
     const res = await serialport.cancelRead();
+    captureConsoleLogs(setInformation, `cancel read: ${res}`);
     console.log("cancel read: ", res);
   } catch (err) {
+    captureConsoleLogs(setInformation, `Error: ${err.message}`);
     console.error(err);
   }
 };

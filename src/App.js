@@ -129,15 +129,15 @@ function App() {
 
   // Handlers for serial port operations
   function openSerialportHandler() {
-    openSerialport(serialport, setConnectionState, readSerialportHandler);
+    openSerialport(serialport, setConnectionState, readSerialportHandler, setInformation);
   }
 
   function writeSerialportHandler() {
-    writeSerialport(serialport, setConnectionState);
+    writeSerialport(serialport, setConnectionState, setInformation);
   }
 
   function readSerialportHandler() {
-    readSerialport(serialport, setConnectionState, listenSerialportHandler);
+    readSerialport(serialport, setConnectionState, listenSerialportHandler, setInformation);
   }
 
   function listenSerialportHandler() {
@@ -147,11 +147,12 @@ function App() {
       parsePack,
       setsnrArray,
       setrssiArray,
+      setInformation,
     );
   }
 
   function cancelReadHandler() {
-    cancelReadSerialport(serialport);
+    cancelReadSerialport(serialport, setInformation);
   }
 
   // Conditional rendering based on live state
