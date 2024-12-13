@@ -19,6 +19,7 @@ export const captureConsoleLogs = (setInformation, message) => {
 export const openSerialport = async (serialport, setConnectionState, read, setInformation) => {
   try {
     await serialport.open();
+    captureConsoleLogs(setInformation, "Serial port opened");
     read();
   } catch (err) {
     setConnectionState("btn-error");
@@ -59,6 +60,7 @@ export const readSerialport = async (
 ) => {
   try {
     const res = await serialport.read({ timeout: 1 });
+    captureConsoleLogs(setInformation, "Reading from serial port");
     listen();
   } catch (err) {
     setConnectionState("btn-error");
@@ -77,7 +79,9 @@ export const listenSerialport = async (
   setInformation,
 ) => {
   try {
-    const res = await serialport.listen((data) => {
+    await serialport.listen((data) => {
+      console.log("Data received:", data); // Log received data
+      captureConsoleLogs(setInformation, `Data received: ${data}`);
       data = data.split("$");
       data.shift();
       for (let pack of data) {
@@ -91,12 +95,8 @@ export const listenSerialport = async (
           pack[1].length !== 0 &&
           pack[2].length !== 0
         ) {
-          console.log("this is pack");
-          console.log(pack);
-          console.log("this is pack[0]");
-          console.log(pack[0]);
-          console.log("this is pack[0][0]");
-          console.log(pack[0][0]);
+          console.log("Parsed pack:", pack); // Log parsed pack
+          captureConsoleLogs(setInformation, `Parsed pack: ${JSON.stringify(pack)}`);
           setsnrArray((prevsnr) => [...prevsnr, pack[2][0]]);
           setrssiArray((prevrssi) => [...prevrssi, pack[1][0]]);
           parsePack(
@@ -124,8 +124,7 @@ export const listenSerialport = async (
       }
     }, false);
     setConnectionState("btn-success btn-disabled");
-    captureConsoleLogs(setInformation, `listen serialport: ${res}`);
-    console.log("listen serialport: ", res);
+    captureConsoleLogs(setInformation, `Listening to serial port`);
   } catch (err) {
     setConnectionState("btn-error");
     captureConsoleLogs(setInformation, `Error: ${err.message}`);

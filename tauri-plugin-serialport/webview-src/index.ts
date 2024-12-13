@@ -184,9 +184,11 @@ class Serialport {
         readEvent,
         ({ payload }) => {
           try {
+            console.log("Raw payload received:", payload); // Log raw payload
             if (isDecode) {
               const decoder = new TextDecoder(this.encoding);
               const data = decoder.decode(new Uint8Array(payload.data));
+              console.log("Decoded data:", data); // Log decoded data
               fn(data);
             } else {
               fn(new Uint8Array(payload.data));
