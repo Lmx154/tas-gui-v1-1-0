@@ -1,17 +1,36 @@
-const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath,cancelRead}) => {
+import React, { useState, useEffect } from 'react';
+import { Serialport } from 'tauri-plugin-serialport-api';
+
+const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInformation, setfilepath, filepath, cancelRead}) => {
+  const [availablePorts, setAvailablePorts] = useState([]);
+
+  useEffect(() => {
+    async function fetchAvailablePorts() {
+      try {
+        const ports = await Serialport.available_ports();
+        setAvailablePorts(ports);
+      } catch (error) {
+        console.error('Error fetching available ports:', error);
+      }
+    }
+    fetchAvailablePorts();
+  }, []);
+
   function setPort (setCOMPort, COMPort) {
-  console.log('old port')
-  console.log(COMPort)
-  setCOMPort(document.getElementById('UserInput').value)
-  console.log(document.getElementById('UserInput').value)
-  console.log('New port')
-  console.log(COMPort)
-  setInformation(COMPort)
+    console.log('old port')
+    console.log(COMPort)
+    setCOMPort(document.getElementById('UserInput').value)
+    console.log(document.getElementById('UserInput').value)
+    console.log('New port')
+    console.log(COMPort)
+    setInformation(COMPort)
   }
+
   function setpath(setfilepath, filepath) {
     setfilepath(document.getElementById('UserPathInput').value)
     setInformation(filepath)
   }
+
   return (
     <div className='flex-1'>
       <div className="divider uppercase">controls</div>
@@ -38,9 +57,9 @@ const Controls = ({connectionState, openSerialport, setCOMPort, COMPort, setInfo
           <div className="input-group w-full">
             <select className="w-full select select-bordered uppercase">
               <option disabled selected>Available COM ports</option>
-              <option>Example Port 1</option>
-              <option>Example Port 2</option>
-              <option>Example Port 3</option>
+              {availablePorts.map((port, index) => (
+                <option key={index} value={port}>{port}</option>
+              ))}
             </select>
           </div>
         </div>
