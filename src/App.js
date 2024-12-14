@@ -65,44 +65,57 @@ function App() {
   }, [COMPort]);
 
   // Function to parse packet data
-  function parsePack(
-    pack1,
-    pack2,
-    pack3,
-    pack4,
-    pack5,
-    pack6,
-    pack7,
-    pack8,
-    pack9,
-    pack10,
-    pack11,
-    pack12,
-    pack13,
-    pack14,
-    pack15,
-    pack16,
-    pack17,
-    pack18,
-  ) {
-    parseMessage(pack1);
-    setAccel_yArray((prevAccely) => [...prevAccely, pack2]);
-    setAccel_ZArray((prevAccelz) => [...prevAccelz, pack3]);
-    setgxArray((prevgxs) => [...prevgxs, pack4]);
-    setgyArray((prevgys) => [...prevgys, pack5]);
-    setgzArray((prevgzs) => [...prevgzs, pack6]);
-    setTemperature_CArray((prevTempC) => [...prevTempC, pack7]);
-    setTemperatureArray((prevTemp) => [...prevTemp, pack8]);
-    setPressuresArray((prevTPressure) => [...prevTPressure, pack9]);
-    setAltitudesArray((prevAltitudesArray) => [...prevAltitudesArray, pack10]);
-    setHumidityArray((prevHumidity) => [...prevHumidity, pack11]);
-    setfixsArray((prevfixs) => [...prevfixs, pack12]);
-    setfixqualityArray((prevfixqlt) => [...prevfixqlt, pack13]);
-    setlatitudesArray((prevlat) => [...prevlat, pack14]);
-    setlongitudesArray((prevlon) => [...prevlon, pack15]);
-    setspeedArray((prevsp) => [...prevsp, pack16]);
-    setaltitudes_gpsArray((prevalt) => [...prevalt, pack17]);
-    setsatellitesArray((prevsat) => [...prevsat, pack18]);
+  function parsePack(dataString) {
+    console.log("Raw data string:", dataString); // Log the raw data string
+    const packets = dataString.split('\n'); // Split the concatenated string into individual packets
+    console.log("Packets:", packets); // Log the packets array
+    packets.forEach((packet, index) => {
+      if (packet.trim() === '') {
+        return; // Skip empty packets
+      }
+      console.log("Processing packet:", packet); // Log the packet being processed
+      const data = packet.split('|');
+      if (data.length !== 23) {
+        console.error('Invalid data format:', data);
+        return;
+      }
+  
+      const [
+        year, month, day, weekday, time, accel_x, accel_y, accel_z, gx, gy, gz,
+        temperature_c, temperature, pressure, altitude, humidity, fix, fix_quality,
+        latitude, longitude, speed, altitude_gps, satellites
+      ] = data;
+  
+      console.log("Parsed data:", {
+        year, month, day, weekday, time, accel_x, accel_y, accel_z, gx, gy, gz,
+        temperature_c, temperature, pressure, altitude, humidity, fix, fix_quality,
+        latitude, longitude, speed, altitude_gps, satellites
+      }); // Log the parsed data
+  
+      setYearArray((prevYear) => [...prevYear, parseInt(year, 10)]);
+      setMonthsArray((prevMonth) => [...prevMonth, parseInt(month, 10)]);
+      setDaysArray((prevDay) => [...prevDay, parseInt(day, 10)]);
+      setweekdaysArray((prevWeekday) => [...prevWeekday, weekday]);
+      settimesArray((prevtimes) => [...prevtimes, time]);
+      setAccel_xArray((prevAccelx) => [...prevAccelx, parseFloat(accel_x)]);
+      setAccel_yArray((prevAccely) => [...prevAccely, parseFloat(accel_y)]);
+      setAccel_ZArray((prevAccelz) => [...prevAccelz, parseFloat(accel_z)]);
+      setgxArray((prevgxs) => [...prevgxs, parseFloat(gx)]);
+      setgyArray((prevgy) => [...prevgy, parseFloat(gy)]);
+      setgzArray((prevgzs) => [...prevgzs, parseFloat(gz)]);
+      setTemperature_CArray((prevTempC) => [...prevTempC, parseFloat(temperature_c)]);
+      setTemperatureArray((prevTemp) => [...prevTemp, parseFloat(temperature)]);
+      setPressuresArray((prevPressure) => [...prevPressure, parseFloat(pressure)]);
+      setAltitudesArray((prevAltitudes) => [...prevAltitudes, parseFloat(altitude)]);
+      setHumidityArray((prevHumidity) => [...prevHumidity, parseFloat(humidity)]);
+      setfixsArray((prevfixs) => [...prevfixs, parseFloat(fix)]);
+      setfixqualityArray((prevfixqlt) => [...prevfixqlt, parseInt(fix_quality, 10)]);
+      setlatitudesArray((prevlat) => [...prevlat, parseFloat(latitude)]);
+      setlongitudesArray((prevlon) => [...prevlon, parseFloat(longitude)]);
+      setspeedArray((prevsp) => [...prevsp, parseFloat(speed)]);
+      setaltitudes_gpsArray((prevalt) => [...prevalt, parseFloat(altitude_gps)]);
+      setsatellitesArray((prevsat) => [...prevsat, parseInt(satellites, 10)]);
+    });
   }
 
   // Function to parse message string
